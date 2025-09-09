@@ -1,9 +1,9 @@
-# cli.py con login habilitado
 from __future__ import annotations
 from getpass import getpass
 
 from .logging_conf import logger
 from .auth import login
+from .storage import load_data, save_data, path_data_file
 
 def pause():
     input("\nPresiona ENTER para continuar...")
@@ -47,11 +47,15 @@ def main():
     header("Gestión de Micro-Eventos (CLI)")
     if not do_login():
         return
+    
+    eventos = load_data()
 
     while True:
         op = menu()
 
         if op == 9:
+            save_data(eventos)
+            print(f"Datos guardados en {path_data_file()}")
             print("¡Hasta luego!")
             break
         elif op == -1:
