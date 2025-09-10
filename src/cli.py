@@ -5,7 +5,7 @@ from .logging_conf import logger
 from .auth import login
 from .storage import load_data, save_data, path_data_file
 from .events import listar_eventos, mostrar_evento, crear_evento_interactivo, editar_evento_interactivo, eliminar_evento_interactivo, buscar_interactivo
-from .sales import vender_interactivo
+from .sales import vender_interactivo, devolver_interactivo
 
 def pause():
     input("\nPresiona ENTER para continuar...")
@@ -111,6 +111,19 @@ def main():
             try:
                 idx = int(input("Índice para vender: "))
                 vender_interactivo(eventos, idx)
+            except (ValueError, IndexError):
+                print("Índice inválido.")
+            pause()
+
+        elif op == 7:
+            header("Devolver entrada")
+            listar_eventos(eventos)
+            if not eventos:
+                pause()
+                continue
+            try:
+                idx = int(input("Índice para devolver: "))
+                devolver_interactivo(eventos, idx)
             except (ValueError, IndexError):
                 print("Índice inválido.")
             pause()
