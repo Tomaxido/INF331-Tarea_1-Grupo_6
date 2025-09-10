@@ -114,3 +114,28 @@ def eliminar_evento_interactivo(eventos: List[Dict], idx: int):
         print("Evento eliminado.")
     else:
         print("Operación cancelada.")
+        
+def buscar_interactivo(eventos: List[Dict]):
+    print("1) Por nombre (substring)")
+    print("2) Por fecha (YYYY-MM-DD)")
+    print("3) Por categoría (exacta)")
+    op = input("Opción: ").strip()
+    if op == "1":
+        sub = input("Texto a buscar en nombre: ").strip().lower()
+        res = [e for e in eventos if sub in e["nombre"].lower()]
+    elif op == "2":
+        f = input("Fecha exacta (YYYY-MM-DD): ").strip()
+        res = [e for e in eventos if e["fecha"] == f]
+    elif op == "3":
+        c = input("Categoría exacta: ").strip().lower()
+        res = [e for e in eventos if e["categoria"].lower() == c]
+    else:
+        print("Opción inválida.")
+        return
+
+    if not res:
+        print("Sin resultados.")
+        return
+
+    for i, e in enumerate(res):
+        print(f"[{i}] {e['nombre']} ({e['categoria']}) - {e['fecha']} - cupos {e['cupos']}/{e['cupos_max']}")
