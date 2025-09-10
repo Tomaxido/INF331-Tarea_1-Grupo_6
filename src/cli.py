@@ -4,7 +4,7 @@ from getpass import getpass
 from .logging_conf import logger
 from .auth import login
 from .storage import load_data, save_data, path_data_file
-from .events import listar_eventos, mostrar_evento  
+from .events import listar_eventos, mostrar_evento, crear_evento_interactivo  
 
 def pause():
     input("\nPresiona ENTER para continuar...")
@@ -57,8 +57,12 @@ def main():
 
     while True:
         op = menu()
-
-        if op == 2: 
+        if op == 1:
+            header("Crear evento")
+            crear_evento_interactivo(eventos)
+            pause()
+            
+        elif op == 2: 
             header("Lista de eventos")
             listar_eventos(eventos)
             pause()
@@ -86,7 +90,7 @@ def main():
             print("Opción inválida.")
         else:
             print(f"(skeleton/login) elegiste opción {op}, aún no implementada.")
-        pause()
+            pause()
 
 
 if __name__ == "__main__":
