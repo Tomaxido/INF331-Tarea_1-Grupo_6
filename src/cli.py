@@ -4,7 +4,7 @@ from getpass import getpass
 from .logging_conf import logger
 from .auth import login
 from .storage import load_data, save_data, path_data_file
-from .events import listar_eventos, mostrar_evento, crear_evento_interactivo, editar_evento_interactivo
+from .events import listar_eventos, mostrar_evento, crear_evento_interactivo, editar_evento_interactivo, eliminar_evento_interactivo
 
 def pause():
     input("\nPresiona ENTER para continuar...")
@@ -79,6 +79,19 @@ def main():
                 ans = input("¿Editar este evento? (s/n): ").strip().lower()
                 if ans == "s":
                     editar_evento_interactivo(eventos, idx)
+            except (ValueError, IndexError):
+                print("Índice inválido.")
+            pause()
+            
+        elif op == 5:
+            header("Eliminar evento")
+            listar_eventos(eventos)
+            if not eventos:
+                pause()
+                continue
+            try:
+                idx = int(input("Índice a eliminar: "))
+                eliminar_evento_interactivo(eventos, idx)
             except (ValueError, IndexError):
                 print("Índice inválido.")
             pause()

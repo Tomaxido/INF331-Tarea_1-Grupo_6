@@ -22,7 +22,7 @@ def listar_eventos(eventos: List[Dict]):
         mostrar_evento(eventos, i)
         
 def crear_evento_interactivo(eventos: List[Dict]):
-    """Crea un nuevo evento interactivo, validando duplicados"""
+    
     nombre = normaliza_texto(input("Nombre: "))
     descripcion = input("Descripción: ").strip()
     fecha = input("Fecha (YYYY-MM-DD): ").strip()
@@ -59,6 +59,7 @@ def crear_evento_interactivo(eventos: List[Dict]):
     print("Evento creado correctamente.")
 
 def editar_evento_interactivo(eventos: List[Dict], idx: int):
+    
     ev = eventos[idx]
     print("Dejar vacío para mantener el valor actual.")
 
@@ -102,3 +103,14 @@ def editar_evento_interactivo(eventos: List[Dict], idx: int):
     eventos[idx] = nuevo
     logger.info("Evento editado: %s", clave_compuesta(nuevo))
     print("Evento actualizado.")
+    
+def eliminar_evento_interactivo(eventos: List[Dict], idx: int):
+    
+    ev = eventos[idx]
+    ans = input(f"¿Eliminar '{ev['nombre']}'? (s/n): ").strip().lower()
+    if ans == "s":
+        logger.info("Evento eliminado: %s", clave_compuesta(ev))
+        eventos.pop(idx)
+        print("Evento eliminado.")
+    else:
+        print("Operación cancelada.")
