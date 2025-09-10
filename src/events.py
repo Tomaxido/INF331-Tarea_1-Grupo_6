@@ -57,3 +57,48 @@ def crear_evento_interactivo(eventos: List[Dict]):
     eventos.append(e)
     logger.info("Evento creado: %s", clave_compuesta(e))
     print("Evento creado correctamente.")
+
+def editar_evento_interactivo(eventos: List[Dict], idx: int):
+    ev = eventos[idx]
+    print("Dejar vacío para mantener el valor actual.")
+
+    nombre = input(f"Nombre [{ev['nombre']}]: ").strip()
+    descripcion = input(f"Descripción [{ev['descripcion']}]: ").strip()
+    fecha = input(f"Fecha [{ev['fecha']}]: ").strip()
+    categoria = input(f"Categoría [{ev['categoria']}]: ").strip()
+    cupos_str = input(f"Cupos [{ev['cupos']}]: ").strip()
+
+    nuevo = dict(ev)  # copia del evento actual
+
+    if nombre:
+        nuevo["nombre"] = normaliza_texto(nombre)
+    if descripcion:
+        nuevo["descripcion"] = descripcion
+    if fecha:
+        if not valida_fecha_iso(fecha):
+            print("Fecha inválida.")
+            return
+        nuevo["fecha"] = fecha
+    if categoria:
+        nuevo["categoria"] = normaliza_cat(categoria)
+    if cupos_str:
+        try:
+            cupos = int(cupos_str)
+        except ValueError:
+            print("Cupos inválidos.")
+            return
+        if cupos < 0:
+            print("Cupos no puede ser negativo.")
+            return
+        if cupos > ev["cupos_max"]:
+            nuevo["cupos_max"] = cupos  # ampliar máximo
+        nuevo["cupos"] = cupos
+
+    if not es_unico(eventos, nuevo, idx_excluir=idx):
+        print("ERROR: la edición genera duplicado (nombre, fecha, categoría).")
+        logger.warning("Intento de edición duplicada: %s", clave_compuesta(nuevo))
+        return
+
+    eventos[idx] = nuevo
+    logger.info("Evento editado: %s", clave_compuesta(nuevo))
+    print("Evento actualizado.")
