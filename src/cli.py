@@ -4,7 +4,7 @@ from getpass import getpass
 from .logging_conf import logger
 from .auth import login
 from .storage import load_data, save_data, path_data_file
-from .events import listar_eventos, mostrar_evento, crear_evento_interactivo, editar_evento_interactivo, eliminar_evento_interactivo
+from .events import listar_eventos, mostrar_evento, crear_evento_interactivo, editar_evento_interactivo, eliminar_evento_interactivo, buscar_interactivo
 
 def pause():
     input("\nPresiona ENTER para continuar...")
@@ -65,6 +65,11 @@ def main():
         elif op == 2: 
             header("Lista de eventos")
             listar_eventos(eventos)
+            pause()
+        
+        elif op == 3:
+            header("Búsquedas")
+            buscar_interactivo(eventos)
             pause()
 
         elif op == 4: 
