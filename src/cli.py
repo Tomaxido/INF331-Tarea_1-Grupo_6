@@ -6,6 +6,7 @@ from .auth import login
 from .storage import load_data, save_data, path_data_file
 from .events import listar_eventos, mostrar_evento, crear_evento_interactivo, editar_evento_interactivo, eliminar_evento_interactivo, buscar_interactivo
 from .sales import vender_interactivo, devolver_interactivo
+from .report import generar_reporte, imprimir_reporte
 
 def pause():
     input("\nPresiona ENTER para continuar...")
@@ -126,6 +127,12 @@ def main():
                 devolver_interactivo(eventos, idx)
             except (ValueError, IndexError):
                 print("Índice inválido.")
+            pause()
+
+        elif op == 8:
+            header("Reporte")
+            rep = generar_reporte(eventos)
+            imprimir_reporte(rep)
             pause()
 
         elif op == 9:
