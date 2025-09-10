@@ -4,14 +4,17 @@ from getpass import getpass
 from .logging_conf import logger
 from .auth import login
 from .storage import load_data, save_data, path_data_file
+from .events import listar_eventos, mostrar_evento  
 
 def pause():
     input("\nPresiona ENTER para continuar...")
+
 
 def header(title: str):
     print("\n" + "="*60)
     print(title)
     print("="*60)
+
 
 def menu() -> int:
     print("\nMenú")
@@ -30,6 +33,7 @@ def menu() -> int:
     except ValueError:
         return -1
 
+
 def do_login() -> bool:
     print("=== Autenticación requerida ===")
     user = input("Usuario: ").strip()
@@ -43,26 +47,47 @@ def do_login() -> bool:
         print("Credenciales inválidas.\n")
     return ok
 
+
 def main():
     header("Gestión de Micro-Eventos (CLI)")
     if not do_login():
         return
-    
+
     eventos = load_data()
 
     while True:
         op = menu()
 
-        if op == 9:
+        if op == 2: 
+            header("Lista de eventos")
+            listar_eventos(eventos)
+            pause()
+
+        elif op == 4: 
+            header("Detalle de un evento")
+            listar_eventos(eventos)
+            if not eventos:
+                pause()
+                continue
+            try:
+                idx = int(input("Índice de evento a mostrar: "))
+                mostrar_evento(eventos, idx)
+            except (ValueError, IndexError):
+                print("Índice inválido.")
+            pause()
+
+        elif op == 9:
             save_data(eventos)
             print(f"Datos guardados en {path_data_file()}")
             print("¡Hasta luego!")
             break
+
         elif op == -1:
             print("Opción inválida.")
         else:
             print(f"(skeleton/login) elegiste opción {op}, aún no implementada.")
         pause()
+
 
 if __name__ == "__main__":
     main()
